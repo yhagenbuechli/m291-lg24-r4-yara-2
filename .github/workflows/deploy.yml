@@ -1,0 +1,34 @@
+name: Deploy auf Plesk
+
+# Manuell auslösen (Actions → "Deploy auf Plesk" → Run workflow).
+# Für automatisches Deployment bei jedem Push auf main den push-Block einkommentieren.
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [main]
+
+concurrency:
+  group: deploy-plesk
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Build und Upload
+        run: npm run deploy
+        env:
+          DEPLOY_PROTOCOL: ${{ vars.DEPLOY_PROTOCOL || 'ftps' }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ vars.DEPLOY_PORT }}
+          DEPLOY_REMOTE_DIR: ${{ vars.DEPLOY_REMOTE_DIR || '/httpdocs' }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
+          VITE_APP_TITLE: ${{ vars.VITE_APP_TITLE || 'M291-Projekt' }}

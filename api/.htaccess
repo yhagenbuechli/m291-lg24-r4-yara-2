@@ -1,0 +1,24 @@
+# Wird mit dem Build nach dist/api/.htaccess kopiert.
+# Leitet alle API-Anfragen (z. B. /api/matches, /api/tasks/3) an index.php weiter.
+
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# api/.env und andere versteckte Dateien sperren
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+# db.php nur intern verwenden, nicht direkt aufrufbar
+<Files "db.php">
+  Require all denied
+</Files>
+
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-store"
+</IfModule>

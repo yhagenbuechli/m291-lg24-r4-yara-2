@@ -1,0 +1,33 @@
+{
+  "name": "matchday-content-planner",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Matchday Content Planner für Modul 291",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node scripts/copy-api.mjs",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "deploy": "npm run build && node scripts/deploy.mjs",
+    "deploy:dry": "npm run build && node scripts/deploy.mjs --dry-run",
+    "deploy:check": "node scripts/deploy.mjs --check"
+  },
+  "dependencies": {
+    "pinia": "^4.0.3",
+    "vue": "^3.5.43",
+    "vue-router": "^5.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "basic-ftp": "^6.2.1",
+    "ssh2-sftp-client": "^12.1.1",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
+  }
+}
